@@ -4,12 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:secret_chat/widgets/circle.dart';
 import 'package:secret_chat/widgets/input_text.dart';
 
-class LoginPage extends StatefulWidget {
+class SignUpPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   @override
   void initState() {
     super.initState();
@@ -94,16 +94,27 @@ class _LoginPageState extends State<LoginPage> {
                                 key: _formKey,
                                 child: Column(
                                   children: <Widget>[
+                                      InputText(
+                                      label: "USERNAME",
+                                      inputType: TextInputType.emailAddress,
+                                      validator: (String text) {
+                                        if (text.contains("@")) {
+                                          return null;
+                                        }
+                                        return "Invalid Email";
+                                      },
+                                    ),
+                                    SizedBox(height: 30),
                                     InputText(
-                                        label: "EMAIL ADDRESS",
-                                        validator: (String text) {
-                                          if (text.contains("@")) {
-                                            return null;
-                                          }
-                                          return "Invalid Email";
-                                        },
-                                        inputType: TextInputType.emailAddress,
-                                        ),
+                                      label: "EMAIL ADDRESS",
+                                      inputType: TextInputType.emailAddress,
+                                      validator: (String text) {
+                                        if (text.contains("@")) {
+                                          return null;
+                                        }
+                                        return "Invalid Email";
+                                      },
+                                    ),
                                     SizedBox(height: 30),
                                     InputText(
                                       label: "PASSWORD",
@@ -142,7 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                                   style: TextStyle(
                                       fontSize: 16, color: Colors.black54)),
                               CupertinoButton(
-                                onPressed: () => Navigator.pushNamed(context, "signup"),
+                                onPressed: () {},
                                 child: Text('Sign up',
                                     style: TextStyle(
                                         fontSize: 16,
@@ -157,7 +168,22 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-            )
+            ),
+            Positioned(
+                left: 15,
+                top: 5,
+                child: SafeArea(
+                  child: CupertinoButton(
+                    padding: EdgeInsets.all(10),
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.black12,
+                    onPressed: () => Navigator.pop(context),
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                    ),
+                  ),
+                ))
           ],
         ),
       ),

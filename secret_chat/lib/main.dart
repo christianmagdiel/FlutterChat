@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:secret_chat/pages/login.dart';
+import 'package:secret_chat/pages/sign_up.dart';
  
 void main() => runApp(MyApp());
  
@@ -12,7 +13,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginPage()
+      home: LoginPage(),
+      routes: {
+        "login"   : (BuildContext context) => LoginPage(),
+        "signup"  : (BuildContext context) => SignUpPage(),
+      },
     );
   }
 }
