@@ -17,6 +17,7 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   final _formKey = GlobalKey<FormState>();
+  var _username='', _email='',_password='';
 
   _submit() {
     _formKey.currentState.validate();
@@ -98,13 +99,13 @@ class _SignUpPageState extends State<SignUpPage> {
                                       label: "USERNAME",
                                       inputType: TextInputType.emailAddress,
                                       validator: (String text) {
-                                        if (text.contains("@")) {
+                                        if (RegExp(r'^[a-zA-Z0-9]+$').hasMatch(text)){
                                           return null;
                                         }
-                                        return "Invalid Email";
+                                        return "Invalid Username";
                                       },
                                     ),
-                                    SizedBox(height: 30),
+                                    SizedBox(height: 20),
                                     InputText(
                                       label: "EMAIL ADDRESS",
                                       inputType: TextInputType.emailAddress,
@@ -115,7 +116,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                         return "Invalid Email";
                                       },
                                     ),
-                                    SizedBox(height: 30),
+                                    SizedBox(height: 20),
                                     InputText(
                                       label: "PASSWORD",
                                       validator: (String text) {
@@ -130,7 +131,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   ],
                                 ),
                               )),
-                          SizedBox(height: 50),
+                          SizedBox(height: 40),
                           ConstrainedBox(
                             constraints: BoxConstraints(
                               maxWidth: 350,
@@ -149,12 +150,12 @@ class _SignUpPageState extends State<SignUpPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Text('New to Frendly Desi?',
+                              Text('Already have an account?',
                                   style: TextStyle(
                                       fontSize: 16, color: Colors.black54)),
                               CupertinoButton(
-                                onPressed: () {},
-                                child: Text('Sign up',
+                                onPressed: () => Navigator.pop(context),
+                                child: Text('Sign In',
                                     style: TextStyle(
                                         fontSize: 16,
                                         color: Colors.pinkAccent)),
