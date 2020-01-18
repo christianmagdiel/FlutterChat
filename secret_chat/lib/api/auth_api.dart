@@ -2,13 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
+import 'package:meta/meta.dart' show required;
 import '../app_config.dart';
 
 
 class AuthApi{
 
-  Future <bool> register(String username, String email, String password) async{
+  Future <bool> register({@required String username, @required String email, @required String password}) async{
    try{
       final url = "${AppConfig.apiHost}/register";
 
@@ -25,7 +25,7 @@ class AuthApi{
       if(response.statusCode == 200){
         final token = parsed['token'] as String;
         final expiresIn = parsed['expiresIn'] as int;
-        
+          print("response 200: ${response.body}");
         return true;
       }else if(response.statusCode == 500){
         throw PlatformException(code: "500", message: parsed['message']);

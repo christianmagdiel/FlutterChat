@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:secret_chat/api/auth_api.dart';
 import 'package:secret_chat/widgets/circle.dart';
 import 'package:secret_chat/widgets/input_text.dart';
 
@@ -17,10 +18,22 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   final _formKey = GlobalKey<FormState>();
+  final _authApi = AuthApi();
+
   var _username='', _email='',_password='';
 
-  _submit() {
-    _formKey.currentState.validate();
+  _submit() async{
+    final isvalid = _formKey.currentState.validate();
+    if (isvalid){
+      final isOk = await _authApi.register(
+        username: _username, 
+        email: _email,
+        password: _password);
+
+      if(isOk){
+        print('REGISTER');
+      }
+    }
   }
 
   @override
@@ -100,6 +113,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                       inputType: TextInputType.emailAddress,
                                       validator: (String text) {
                                         if (RegExp(r'^[a-zA-Z0-9]+$').hasMatch(text)){
+                                          _username = text;
                                           return null;
                                         }
                                         return "Invalid Username";
@@ -111,6 +125,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                       inputType: TextInputType.emailAddress,
                                       validator: (String text) {
                                         if (text.contains("@")) {
+                                          _email = text;
                                           return null;
                                         }
                                         return "Invalid Email";
@@ -122,6 +137,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                       validator: (String text) {
                                         if (text.isNotEmpty &&
                                             text.length > 5) {
+                                            _password = text;
                                           return null;
                                         }
                                         return "Invalid Password";
