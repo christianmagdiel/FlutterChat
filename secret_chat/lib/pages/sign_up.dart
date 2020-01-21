@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:secret_chat/api/auth_api.dart';
+import 'package:secret_chat/utils/responsive.dart';
 import 'package:secret_chat/widgets/circle.dart';
 import 'package:secret_chat/widgets/input_text.dart';
 
@@ -46,7 +47,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
+    final responsive = Responsive(context);
     return Scaffold(
         body: GestureDetector(
       onTap: () {
@@ -84,8 +85,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       Column(
                         children: <Widget>[
                           Container(
-                            width: 90,
-                            height: 90,
+                            width: responsive.wp(25),
+                            height: responsive.wp(25),
                             margin: EdgeInsets.only(top: size.width * 0.3),
                             decoration: BoxDecoration(
                                 color: Colors.white,
@@ -95,12 +96,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                       color: Colors.black26, blurRadius: 25),
                                 ]),
                           ),
-                          SizedBox(height: 30),
+                          SizedBox(height: responsive.hp(4)),
                           Text(
                             'Hello again \nwelcome back',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w300),
+                                fontSize: responsive.ip(2.5), fontWeight: FontWeight.w300),
                           )
                         ],
                       ),
@@ -108,8 +109,8 @@ class _SignUpPageState extends State<SignUpPage> {
                         children: <Widget>[
                           ConstrainedBox(
                               constraints: BoxConstraints(
-                                maxWidth: 350,
-                                minWidth: 350,
+                                maxWidth: 310,
+                                minWidth: 310,
                               ),
                               child: Form(
                                 key: _formKey,
@@ -117,6 +118,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   children: <Widget>[
                                     InputText(
                                       label: "USERNAME",
+                                      fontSize: responsive.ip(1.8),
                                       inputType: TextInputType.emailAddress,
                                       validator: (String text) {
                                         if (RegExp(r'^[a-zA-Z0-9]+$')
@@ -127,9 +129,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                         return "Invalid Username";
                                       },
                                     ),
-                                    SizedBox(height: 20),
+                                    SizedBox(height: responsive.hp(3)),
                                     InputText(
                                       label: "EMAIL ADDRESS",
+                                      fontSize: responsive.ip(1.8),
                                       inputType: TextInputType.emailAddress,
                                       validator: (String text) {
                                         if (text.contains("@")) {
@@ -139,9 +142,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                         return "Invalid Email";
                                       },
                                     ),
-                                    SizedBox(height: 20),
+                                    SizedBox(height: responsive.hp(3)),
                                     InputText(
                                       label: "PASSWORD",
+                                      fontSize: responsive.ip(1.8),
                                       validator: (String text) {
                                         if (text.isNotEmpty &&
                                             text.length > 5) {
@@ -155,11 +159,11 @@ class _SignUpPageState extends State<SignUpPage> {
                                   ],
                                 ),
                               )),
-                          SizedBox(height: 40),
+                          SizedBox(height: responsive.hp(15)),
                           ConstrainedBox(
                             constraints: BoxConstraints(
-                              maxWidth: 350,
-                              minWidth: 350,
+                              maxWidth: 310,
+                              minWidth: 310,
                             ),
                             child: CupertinoButton(
                               padding: EdgeInsets.symmetric(vertical: 15),
@@ -167,26 +171,26 @@ class _SignUpPageState extends State<SignUpPage> {
                               borderRadius: BorderRadius.circular(4),
                               onPressed: () => _submit(),
                               child: Text('Sign in',
-                                  style: TextStyle(fontSize: 20)),
+                                  style: TextStyle(fontSize: responsive.ip(2.5))),
                             ),
                           ),
-                          SizedBox(height: 20),
+                          SizedBox(height: responsive.hp(2)),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text('Already have an account?',
                                   style: TextStyle(
-                                      fontSize: 16, color: Colors.black54)),
+                                      fontSize: responsive.ip(2), color: Colors.black54)),
                               CupertinoButton(
                                 onPressed: () => Navigator.pop(context),
                                 child: Text('Sign In',
                                     style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: responsive.ip(2),
                                         color: Colors.pinkAccent)),
                               )
                             ],
                           ),
-                          SizedBox(height: size.height * 0.08)
+                          SizedBox(height: responsive.hp(5))
                         ],
                       )
                     ],
