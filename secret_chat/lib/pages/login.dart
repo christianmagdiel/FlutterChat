@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:secret_chat/api/auth_api.dart';
 import 'package:secret_chat/widgets/circle.dart';
 import 'package:secret_chat/widgets/input_text.dart';
 
@@ -10,16 +11,36 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
+  final _authApi = AuthApi();
+  var _email = '', _password = '';
+  var _isFetching = false;
+
   @override
   void initState() {
     super.initState();
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
   }
 
-  final _formKey = GlobalKey<FormState>();
+  _submit() async {
+    if (_isFetching) return;
 
-  _submit() {
-    _formKey.currentState.validate();
+    final isValid = _formKey.currentState.validate();
+
+    if (isValid) {
+      setState(() {
+        _isFetching = true;
+      });
+      final isOk =
+          await _authApi.login(context, email: _email, password: _password);
+      setState(() {
+        _isFetching = false;
+      });
+      if (isOk) {
+        print('LOGIN OK');
+        Navigator.pushNamed(context, "home");
+      }
+    }
   }
 
   @override
@@ -95,21 +116,23 @@ class _LoginPageState extends State<LoginPage> {
                                 child: Column(
                                   children: <Widget>[
                                     InputText(
-                                        label: "EMAIL ADDRESS",
-                                        validator: (String text) {
-                                          if (text.contains("@")) {
-                                            return null;
-                                          }
-                                          return "Invalid Email";
-                                        },
-                                        inputType: TextInputType.emailAddress,
-                                        ),
+                                      label: "EMAIL ADDRESS",
+                                      validator: (String text) {
+                                        if (text.contains("@")) {
+                                          _email = text;
+                                          return null;
+                                        }
+                                        return "Invalid Email";
+                                      },
+                                      inputType: TextInputType.emailAddress,
+                                    ),
                                     SizedBox(height: 30),
                                     InputText(
                                       label: "PASSWORD",
                                       validator: (String text) {
                                         if (text.isNotEmpty &&
                                             text.length > 5) {
+                                          _password = text;
                                           return null;
                                         }
                                         return "Invalid Password";
@@ -142,7 +165,8 @@ class _LoginPageState extends State<LoginPage> {
                                   style: TextStyle(
                                       fontSize: 16, color: Colors.black54)),
                               CupertinoButton(
-                                onPressed: () => Navigator.pushNamed(context, "signup"),
+                                onPressed: () =>
+                                    Navigator.pushNamed(context, "signup"),
                                 child: Text('Sign up',
                                     style: TextStyle(
                                         fontSize: 16,
@@ -157,7 +181,16 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-            )
+            ),
+            _isFetching
+                ? Positioned.fill(
+                    child: Container(
+                    color: Colors.black45,
+                    child: Center(
+                      child: CupertinoActivityIndicator(radius: 15),
+                    ),
+                  ))
+                : Container()
           ],
         ),
       ),

@@ -20,18 +20,25 @@ class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   final _authApi = AuthApi();
 
-  var _username='', _email='',_password='';
+  var _username = '', _email = '', _password = '';
+  var _isFetching = false;
 
-  _submit() async{
+  _submit() async {
+    if (_isFetching) return;
+
     final isvalid = _formKey.currentState.validate();
-    if (isvalid){
-      final isOk = await _authApi.register(
-        username: _username, 
-        email: _email,
-        password: _password);
-
-      if(isOk){
+    if (isvalid) {
+      setState(() {
+        _isFetching = true;
+      });
+      final isOk = await _authApi.register(context,
+          username: _username, email: _email, password: _password);
+      setState(() {
+        _isFetching = false;
+      });
+      if (isOk) {
         print('REGISTER');
+        Navigator.pushNamed(context, "home");
       }
     }
   }
@@ -108,11 +115,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                 key: _formKey,
                                 child: Column(
                                   children: <Widget>[
-                                      InputText(
+                                    InputText(
                                       label: "USERNAME",
                                       inputType: TextInputType.emailAddress,
                                       validator: (String text) {
-                                        if (RegExp(r'^[a-zA-Z0-9]+$').hasMatch(text)){
+                                        if (RegExp(r'^[a-zA-Z0-9]+$')
+                                            .hasMatch(text)) {
                                           _username = text;
                                           return null;
                                         }
@@ -137,7 +145,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                       validator: (String text) {
                                         if (text.isNotEmpty &&
                                             text.length > 5) {
-                                            _password = text;
+                                          _password = text;
                                           return null;
                                         }
                                         return "Invalid Password";
@@ -200,7 +208,16 @@ class _SignUpPageState extends State<SignUpPage> {
                       color: Colors.white,
                     ),
                   ),
-                ))
+                )),
+            _isFetching
+                ? Positioned.fill(
+                    child: Container(
+                    color: Colors.black45,
+                    child: Center(
+                      child: CupertinoActivityIndicator(radius: 15),
+                    ),
+                  ))
+                : Container()
           ],
         ),
       ),
