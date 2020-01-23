@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:secret_chat/api/auth_api.dart';
 import 'package:secret_chat/api/profile_api.dart';
 import 'package:secret_chat/models/user.dart';
+import 'package:secret_chat/providers/me.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -12,6 +13,8 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   final _authAPI = AuthApi();
   final _profileAPI = ProfileAPI();
+  Me _me;
+
   @override
   void initState() {
     super.initState();
@@ -29,6 +32,8 @@ class _SplashPageState extends State<SplashPage> {
       print("email: ${user.email}");
       print("user json: ${user.toJson()}");
 
+      _me.data = user;
+
       Navigator.pushReplacementNamed(context, "home");
     } else {
       Navigator.pushReplacementNamed(context, "login");
@@ -37,6 +42,9 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    _me = Me.of(context);
+
     return Scaffold(
       body: Center(
         child: CupertinoActivityIndicator(radius: 15),

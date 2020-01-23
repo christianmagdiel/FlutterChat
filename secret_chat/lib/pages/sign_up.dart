@@ -39,7 +39,7 @@ class _SignUpPageState extends State<SignUpPage> {
       });
       if (isOk) {
         print('REGISTER');
-        Navigator.pushNamed(context, "home");
+         Navigator.pushNamedAndRemoveUntil(context, "splash",(_)=>false);
       }
     }
   }

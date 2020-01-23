@@ -26,6 +26,7 @@ dependencies:
   http:
   flutter_secure_storage: ^3.3.1+1
   provider: ^4.0.2
+  adhara_socket_io: ^0.4.1
 
 dev_dependencies:
   flutter_test:

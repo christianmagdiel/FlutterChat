@@ -2,8 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Dialogs {
-  static void alert(BuildContext context,
-      {title = '', message: ''}) {
+  static void alert(BuildContext context, {title = '', message: ''}) {
     showDialog(
         context: context,
         builder: (context) {
@@ -19,6 +18,32 @@ class Dialogs {
                 },
                 child: Text("OK"),
               )
+            ],
+          );
+        });
+  }
+
+  static void confirm(BuildContext context,
+      {title = '',
+      message: '',
+      VoidCallback onCancel,
+      VoidCallback onConfirm}) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Text(title,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+            content: Text(message,
+                style: TextStyle(fontWeight: FontWeight.w300, fontSize: 15)),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                  onPressed: onCancel,
+                  child: Text(
+                    "CANCEL",
+                    style: TextStyle(color: Colors.redAccent),
+                  )),
+              CupertinoDialogAction(onPressed: onConfirm, child: Text("OK"))
             ],
           );
         });

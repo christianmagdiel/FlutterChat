@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
       });
       if (isOk) {
         print('LOGIN OK');
-        Navigator.pushNamed(context, "home");
+        Navigator.pushNamedAndRemoveUntil(context, "splash",(_)=>false);
       }
     }
   }

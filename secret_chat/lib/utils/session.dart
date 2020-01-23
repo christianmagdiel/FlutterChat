@@ -23,4 +23,8 @@ class Session {
      return null;
   }
 
+  clear() async{
+    await storage.deleteAll();
+  }
+
 }
